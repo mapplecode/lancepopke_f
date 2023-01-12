@@ -7,6 +7,8 @@ from sales import Fetch_all_api_products
 import xml.etree.cElementTree as ET
 from copy import copy
 from tok import token
+from copy import copy
+
 HereToken = token()
 
 def createCategory():
@@ -57,80 +59,91 @@ def MatchCategory():
                 StoreCategoryHere['Category_Id'] = category.get('HereIdHere')
                 StoreCategoryHere['categorycreate_time'] = category.get('CreateTime')
                 storeSalesLayer.append(StoreCategoryHere)
-                
     return storeSalesLayer
 
 
 
-def getcategoryRecordsFromXml():
-    mst = timezone('MST')
-    store = datetime.now(mst)
-    from datetime import timedelta
-    GetCurrent_MSTTime = str(store).split('.')[0]
-    getnewList = list()
-    StoreCategoryHere = MatchCategory()
+# def getcategoryRecordsFromXml():
+#     mst = timezone('MST')
+#     store = datetime.now(mst)
+#     from datetime import timedelta
+#     GetCurrent_MSTTime = str(store).split('.')[0]
+#     getnewList = list()
+#     StoreCategoryHere = MatchCategory()
     
-    for getcat in StoreCategoryHere:
+#     for getcat in StoreCategoryHere:
        
-        storeId = getcat.get('Category_Id')
-        storeName = getcat.get('brand_name')
-        storeCreateDate = getcat.get('categorycreate_time')
-        n = str(storeCreateDate).replace('T'," ").split('-08:00')[0]
-        datetime_object = datetime.strptime(n, '%Y-%m-%d %H:%M:%S')
-        currentdt= GetCurrent_MSTTime
-        currentobj = datetime.strptime(currentdt, '%Y-%m-%d %H:%M:%S')
-        minus = currentobj-datetime_object
-        getnewList.append({"Name":storeName,"Date":storeCreateDate,"Id":storeId})
-    return getnewList
+#         storeId = getcat.get('Category_Id')
+#         storeName = getcat.get('brand_name')
+#         storeCreateDate = getcat.get('categorycreate_time')
+#         n = str(storeCreateDate).replace('T'," ").split('-08:00')[0]
+#         datetime_object = datetime.strptime(n, '%Y-%m-%d %H:%M:%S')
+#         currentdt= GetCurrent_MSTTime
+#         currentobj = datetime.strptime(currentdt, '%Y-%m-%d %H:%M:%S')
+#         minus = currentobj-datetime_object
+#         getnewList.append({"Name":storeName,"Date":storeCreateDate,"Id":storeId})
+#     return getnewList
 
 
-def createClass():
-    ClassAndIdHere = list()
-    all_pro = Fetch_all_api_products()
-    removeduplicateValue = list()
-    lst =[i.get('classfication') for i in all_pro]
-    for i in lst:
-        if i not in removeduplicateValue:
-            removeduplicateValue.append(i) 
-    for classification in removeduplicateValue:
-        try:
-            if classification!='':
-                url = "https://sandbox-quickbooks.api.intuit.com/v3/company/4620816365266478670/class?minorversion=65"
-                payload = json.dumps({
-                    "Name": classification,
-                })    
-                headers = {
-                'Authorization': f'Bearer {HereToken}',
-                'Content-Type': 'application/json'}
-                reasponse = requests.request("POST", url, headers=headers, data=payload)
-                data_dict = dict(xmltodict.parse(reasponse.text))
+# def createClass():
+#     ClassAndIdHere = list()
+#     all_pro = Fetch_all_api_products()
+#     removeduplicateValue = list()
+#     lst =[i.get('classfication') for i in all_pro]
+#     for i in lst:
+#         if i not in removeduplicateValue:
+#             removeduplicateValue.append(i) 
+#     for classification in removeduplicateValue:
+#         try:
+#             if classification!='':
+#                 url = "https://sandbox-quickbooks.api.intuit.com/v3/company/4620816365266478670/class?minorversion=65"
+#                 payload = json.dumps({
+#                     "Name": classification,
+#                 })    
+#                 headers = {
+#                 'Authorization': f'Bearer {HereToken}',
+#                 'Content-Type': 'application/json'}
+#                 reasponse = requests.request("POST", url, headers=headers, data=payload)
+#                 data_dict = dict(xmltodict.parse(reasponse.text))
                 
-                ClassAndIdHere.append({"ClassNameHere":data_dict.get('IntuitResponse').get('Class').get('Name'),"ClassIdHere":data_dict.get('IntuitResponse').get('Class').get('Id')})
-        except Exception as e:
-            pass
-    return ClassAndIdHere
-from copy import copy
+#                 ClassAndIdHere.append({"ClassNameHere":data_dict.get('IntuitResponse').get('Class').get('Name'),"ClassIdHere":data_dict.get('IntuitResponse').get('Class').get('Id')})
+#         except Exception as e:
+#             pass
+#     return ClassAndIdHere
 
 
-def CreateItem():
-    import requests
-    import json
-    data = getcategoryRecordsFromXml()
-    AllClassRecordsListHere = list()
-    classdata = createClass()
-    all_pro = Fetch_all_api_products()
-    for product in all_pro:
-        for category in data:
-            for i in classdata:
-                new_item = copy(product)
-                new_item['ClassNameHere'] = i.get('ClassNameHere')
-                new_item['ClassIdHere'] = i.get('ClassIdHere')
-                new_item['Category_Name'] = category.get('Name')
-                new_item['Category_Date'] = category.get('Date')
-                new_item['Category_Id'] = category.get('Id')
-                AllClassRecordsListHere.append(new_item)
-    for dt in AllClassRecordsListHere:
-        print(dt,"--------------------------------------------")
+
+def GetClassHere():
+    print("hiiiiiiiiiiii")
+    StoreClassHere = createClass()
+    for classhere in StoreClassHere:
+        print(classhere,"======")
+
+GetClassHere()
+
+# def CreateItem():
+#     import requests
+#     import json
+#     StoreCategoryHere = MatchCategory()
+#     for getcat in StoreCategoryHere:
+#         print(getcat,"-----------------------------------------------------------------------")
+    
+    # data = getcategoryRecordsFromXml()
+    # AllClassRecordsListHere = list()
+    # classdata = createClass()
+    # all_pro = Fetch_all_api_products()
+    # for product in all_pro:
+    #     for category in data:
+    #         for i in classdata:
+    #             new_item = copy(product)
+    #             new_item['ClassNameHere'] = i.get('ClassNameHere')
+    #             new_item['ClassIdHere'] = i.get('ClassIdHere')
+    #             new_item['Category_Name'] = category.get('Name')
+    #             new_item['Category_Date'] = category.get('Date')
+    #             new_item['Category_Id'] = category.get('Id')
+    #             AllClassRecordsListHere.append(new_item)
+    # for dt in AllClassRecordsListHere:
+    #     print(dt,"--------------------------------------------")
         # barcode = dt.get('barcode')
         # if barcode:
         #     product_refrence = dt.get('refrence')
@@ -184,7 +197,7 @@ def CreateItem():
         
         
                 
-CreateItem()
+# CreateItem()
 
         
     # classdata = createClass()
