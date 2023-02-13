@@ -20,25 +20,21 @@ def Fetch_all_api_products():
         if product:
             try:
                 a_product = {
-                    'barcode':product[-9] if product[-9] else '',
+                    'barcode':product[27] if product[27] else '',
                     'refrence':product[4] if product[4] else '',
                     'image':product[8][0][-1] if product[8] and product[8][0] else '',
                     'name':product[5] if product[5] else '',
                     'size':product[16] if product[16] else '',
-                    'brand_name':product[-10][0] if product[3] and product[-10][0] else '',
+                    'brand_name':product[26][0] if product[26] and product[26][0] else '',
                     'classfication':product[14][0] if product[14] and product[14][0] else '',
                     'suplier_item_name':product[5] if product[5] else '',
-                    'brand_Subcategory':product[-4] if product[-4] else '',
-                    'preferred_Supplier':product[-3] if product[-3] else '',
-                    
+                    'brand_Subcategory':product[32] if product[32] else '',
+                    'preferred_Supplier':product[33] if product[33] else '',
+                    'Units_hand':product[36] if product[36] else '',
+                    'cost':product[37] if product[37] else '',
                 }
                 all_products.append(a_product)
             except:
                 pass
     return all_products
-
-
-
-
-
 

@@ -4,16 +4,14 @@ def token():
 
     url = "https://oauth.platform.intuit.com/oauth2/v1/tokens/bearer"
 
-    payload='grant_type=refresh_token&refresh_token=AB11682245362NWMSnm0BwJZIE6xEonEm1ezQFpF54v91jtaRV'
+    payload='grant_type=refresh_token&refresh_token=AB11684927586gxf9PI1vPhk5wB78sSm8QCfKuVgf1AOQC8JYm'
     headers = {
     'Accept': 'application/json',
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': 'Basic QUJCbEpVc2lXQnQ2VjVRWlpjcTBpVW4zSjlQTElXT0ZBR1hpaDlUaXlycFFKd1Bna0M6WVB5Mml2OWFNQVlZa2RDS3dYSXFNVjIxUHplUkgzOWMxRmR2UHdubw=='
+    'Authorization': 'Basic QUJ4QzNaUFZCMDBhOEtmYTdGQ3dzYmdjMlp3aUFyVzFFMkNuUWZZZmdPOGRrOU15cUI6dlFES1FwRzhZV2VONkZWdmRvNE5vRm95Y2JMMTZ3RXI0UWtBRU5oVw=='
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
     js = json.loads(response.text).get('access_token')
     return js
 
-# data = token()
-# print(data,'------------------------------------')
